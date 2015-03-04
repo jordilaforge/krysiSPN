@@ -98,15 +98,15 @@ public class SPN {
 		System.out.println("Plain: "+shortToString(working));
 		System.out.println("Key:   "+intToString(key));
 		//Schlüsselberechnung
-		short k0=(short) (key >> 12);
+		short k0=(short) (key >>> 12);
 		System.out.println("k0:    "+shortToString(k0));
-		short k1=(short) (key >> 8);
+		short k1=(short) ((key << 12)>>>20);
 		System.out.println("k1:    "+shortToString(k1));
-		short k2=(short) (key >> 4);
+		short k2=(short) ((key << 16)>>>20);
 		System.out.println("k2:    "+shortToString(k2));
-		short k3=(short) key;
+		short k3=(short) ((key << 20)>>>20);
 		System.out.println("k3:    "+shortToString(k3));
-		
+		System.out.println("----------------------------------");
 		//Weiss-Schritt
 		working= (short) (working ^ k0);
 		System.out.println("Weiss: "+shortToString(working));
@@ -138,6 +138,6 @@ public class SPN {
 	}
 	
 	public String intToString(int i){
-		return String.format("%16s", Integer.toBinaryString(i)).replace(' ', '0');
+		return String.format("%32s", Integer.toBinaryString(i)).replace(' ', '0');
 	}
 }

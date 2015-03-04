@@ -6,8 +6,8 @@ public class MainSPN {
 		SPN a = new SPN("Hallo");
 		a.crypt();
 		a.decrypt();
-		short plain = 4751;
-		int key = 287869952;
+		short plain = 3926;
+		int key = 1768455;
 		a.SubstitionNetwork(plain, key);
 
 	}
