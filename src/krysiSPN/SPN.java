@@ -110,6 +110,7 @@ public class SPN {
 		//Weiss-Schritt
 		working= (short) (working ^ k0);
 		System.out.println("Weiss: "+shortToString(working));
+		working=sbox(working);
 		//SBOX
 //		byte first = (byte) (working >> 12);
 //		byte second = (byte) (working >> 8);
@@ -124,17 +125,23 @@ public class SPN {
 		return 0;
 	}
 	
+	private short sbox(short working) {
+		byte first =  (byte) ((working<<20) >>> 28);
+		System.out.println("first: "+byteToString(first));		
+	    byte second = (byte)((working<<24) >>> 28);
+	    System.out.println("second:"+byteToString(second));
+	    byte third = (byte) ((working<<28) >>> 28);
+	    System.out.println("third: "+byteToString(third));
+		return 0;
+	}
+
+
 	public String byteToString(byte b){
 		return String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
 	}
 	
 	public String shortToString(short s){
-		String out;
-		out=String.format("%16s", Integer.toBinaryString(s)).replace(' ', '0');
-		if(out.length()>16){
-			out=out.substring(16,32);
-		}
-		return out;
+		return String.format("%16s", Integer.toBinaryString(s)).replace(' ', '0');
 	}
 	
 	public String intToString(int i){
