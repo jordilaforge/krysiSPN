@@ -99,9 +99,9 @@ public class SPN {
 		short k2 = (short) ((key << 8) >>> 16);
 		System.out.println("k2:    " + shortToString(k2));
 		short k3 = (short) ((key << 12) >>> 16);
-		System.out.println("k3:    " + intToString(k3));
+		System.out.println("k3:    " + shortToString(k3));
 		short k4 = (short) ((key << 16) >>> 16);
-		System.out.println("k4:    " + intToString(k4));
+		System.out.println("k4:    " + shortToString(k4));
 		System.out.println("----------------------------------------");
 		//white step
 		working = (short) (working ^ k0);
@@ -233,8 +233,12 @@ public class SPN {
 	 * @return string representation of s
 	 */
 	public String shortToString(short s) {
+		System.out.println("short presentation:"+s);
 		String str = String.format("%16s", Integer.toBinaryString(s)).replace(
 				' ', '0');
+		if(str.charAt(0)=='1'){
+			str=str.substring(16);
+		}
 		str = new StringBuilder(str).insert(4, " ").toString();
 		str = new StringBuilder(str).insert(9, " ").toString();
 		str = new StringBuilder(str).insert(14, " ").toString();
