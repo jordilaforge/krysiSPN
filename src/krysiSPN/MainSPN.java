@@ -10,15 +10,6 @@ public class MainSPN {
 
 	public static void main(String[] args) {
 		SPN a = new SPN();
-//		short plain = 4751;
-//		int key = 287869952;
-//		short chiffre = a.encrypt(plain, key);
-//		if(a.decrypt(chiffre, key)==plain){
-//			System.out.println("Dechiffrierfbedingung erfüllt!");
-//		}
-//		else{
-//			System.out.println("Ups Dechiffrierbedingung nicht erfüllt!");
-//		}
 		short[] plainarray = new short[7];
 		short[] chiffrearray = new short[7];
 		try (BufferedReader br = new BufferedReader(new FileReader("paare.txt"))) {
@@ -45,7 +36,7 @@ public class MainSPN {
 			e.printStackTrace();
 		}
 		int key = a.crack(plainarray, chiffrearray);
-		System.out.println("Cracked key="+key);
+		System.out.println("Key: "+key);
 	}
 
 }

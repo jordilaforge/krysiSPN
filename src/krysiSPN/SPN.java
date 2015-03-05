@@ -350,10 +350,13 @@ public class SPN {
 			byte same=0;
 			for(int i=0;i<plainarray.length;++i){
 				if(encrypt(plainarray[i], key)==chiffrearray[i]){
-					++same;
+					same++;
+				}
+				else{
+					break;
 				}
 			}
-			if(same==6){
+			if(same==7){
 				return key;
 			}
 			if(key%10000000==0){
