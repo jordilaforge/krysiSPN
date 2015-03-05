@@ -87,6 +87,7 @@ public class SPN {
 	 * @return return encrypted short value
 	 */
 	public short encrypt(short plain, int key) {
+		System.out.println("---------Encryption--------------------");
 		short working = plain;
 		System.out.println("plain: " + shortToString(working));
 		System.out.println("key:   " + intToString(key));
@@ -106,7 +107,7 @@ public class SPN {
 		System.out.println("---------round1-------------------------");
 		//round1
 		//sbox
-		working = sbox(working);
+		working = sbox(working,sbox);
 		System.out.println("sbox:  " + shortToString(working));
 		//permutation with table
 		working = perm(working);
@@ -117,7 +118,7 @@ public class SPN {
 		System.out.println("---------round2-------------------------");
 		//round2
 		//sbox
-		working = sbox(working);
+		working = sbox(working,sbox);
 		System.out.println("sbox:  " + shortToString(working));
 		//permutation with table
 		working = perm(working);
@@ -128,7 +129,7 @@ public class SPN {
 		System.out.println("---------round3-------------------------");
 		//round3
 		//sbox
-		working = sbox(working);
+		working = sbox(working,sbox);
 		System.out.println("sbox:  " + shortToString(working));
 		//XOR k3
 		working = (short) (working ^ k3);
@@ -182,7 +183,7 @@ public class SPN {
 	 * @param working short to change
 	 * @return changed short
 	 */
-	private short sbox(short working) {
+	private short sbox(short working,Map<Byte, Byte> sbox) {
 		byte first = (byte) ((working << 20) >>> 28);
 		byte second = (byte) ((working << 24) >>> 28);
 		byte third = (byte) ((working << 28) >>> 28);
@@ -239,5 +240,66 @@ public class SPN {
 		str = new StringBuilder(str).insert(29, " ").toString();
 		str = new StringBuilder(str).insert(34, " ").toString();
 		return str;
+	}
+
+
+	public int decrypt(short chiffre, int key) {
+		System.out.println("---------Decryption--------------------");
+		//invert sbox;
+		Map<Byte, Byte> sboxInv = new HashMap<Byte, Byte>();
+		for(byte i=0; i<16;i++){
+			if(sbox.containsKey(i)){
+				sboxInv.put(sbox.get(i), i);
+			}
+		}
+		//generate keys
+		short working = chiffre;
+		System.out.println("chiff: " + shortToString(working));
+		System.out.println("key:   " + intToString(key));
+		// key calculation
+		short k0inv = (short) ((key << 20) >>> 20);
+		System.out.println("k0:    " + shortToString(k0inv));
+		short k1inv = perm((short) ((key << 16) >>> 20));
+		System.out.println("k1:    " + shortToString(k1inv));
+		short k2inv = perm((short) ((key << 12) >>> 20));
+		System.out.println("k2:    " + shortToString(k2inv));
+		short k3inv = (short) (key >>> 12);
+		System.out.println("k3:    " + shortToString(k3inv));
+		System.out.println("----------------------------------------");
+		//white step
+		working = (short) (working ^ k0inv);
+		System.out.println("white: " + shortToString(working));
+		System.out.println("---------round1-------------------------");
+		//round1
+		//sbox
+		working = sbox(working,sboxInv);
+		System.out.println("sbox:  " + shortToString(working));
+		//permutation with table
+		working = perm(working);
+		System.out.println("perm:  " + shortToString(working));
+		//XOR k1
+		working = (short) (working ^ k1inv);
+		System.out.println("xork1: " + shortToString(working));
+		System.out.println("---------round2-------------------------");
+		//round2
+		//sbox
+		working = sbox(working,sboxInv);
+		System.out.println("sbox:  " + shortToString(working));
+		//permutation with table
+		working = perm(working);
+		System.out.println("perm:  " + shortToString(working));
+		//XOR k2
+		working = (short) (working ^ k2inv);
+		System.out.println("xork2: " + shortToString(working));
+		System.out.println("---------round3-------------------------");
+		//round3
+		//sbox
+		working = sbox(working,sboxInv);
+		System.out.println("sbox:  " + shortToString(working));
+		//XOR k3
+		working = (short) (working ^ k3inv);
+		System.out.println("xork3: " + shortToString(working));
+		System.out.println("chiff: " + shortToString(working));
+		return working;
 	}
 }

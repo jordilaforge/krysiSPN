@@ -6,8 +6,10 @@ public class MainSPN {
 		SPN a = new SPN();
 		short plain = 3926;
 		int key = 1768455;
-		a.encrypt(plain, key);
-
+		short chiffre = a.encrypt(plain, key);
+		if(a.decrypt(chiffre, key)==plain){
+			System.out.println("Dechiffriefbedingung erfüllt!");
+		};
 	}
 
 }
