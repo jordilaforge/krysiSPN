@@ -8,8 +8,11 @@ public class MainSPN {
 		int key = 1768455;
 		short chiffre = a.encrypt(plain, key);
 		if(a.decrypt(chiffre, key)==plain){
-			System.out.println("Dechiffriefbedingung erfüllt!");
-		};
+			System.out.println("Dechiffrierfbedingung erfüllt!");
+		}
+		else{
+			System.out.println("Ups Dechiffrierbedingung nicht erfüllt!");
+		}
 	}
 
 }

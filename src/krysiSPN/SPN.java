@@ -242,7 +242,12 @@ public class SPN {
 		return str;
 	}
 
-
+	/**
+	 * Method to decrypt a cypher text with a substitution permutation network
+	 * @param chiffre cypher byte
+	 * @param key int
+	 * @return
+	 */
 	public int decrypt(short chiffre, int key) {
 		System.out.println("---------Decryption--------------------");
 		//invert sbox;
