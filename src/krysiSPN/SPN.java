@@ -92,14 +92,16 @@ public class SPN {
 		System.out.println("plain: " + shortToString(working));
 		System.out.println("key:   " + intToString(key));
 		// key calculation
-		short k0 = (short) (key >>> 12);
+		short k0 = (short) (key >>> 16);
 		System.out.println("k0:    " + shortToString(k0));
-		short k1 = (short) ((key << 12) >>> 20);
+		short k1 = (short) ((key << 4) >>> 16);
 		System.out.println("k1:    " + shortToString(k1));
-		short k2 = (short) ((key << 16) >>> 20);
+		short k2 = (short) ((key << 8) >>> 16);
 		System.out.println("k2:    " + shortToString(k2));
-		short k3 = (short) ((key << 20) >>> 20);
-		System.out.println("k3:    " + shortToString(k3));
+		short k3 = (short) ((key << 12) >>> 16);
+		System.out.println("k3:    " + intToString(k3));
+		short k4 = (short) ((key << 16) >>> 16);
+		System.out.println("k4:    " + intToString(k4));
 		System.out.println("----------------------------------------");
 		//white step
 		working = (short) (working ^ k0);
@@ -131,9 +133,20 @@ public class SPN {
 		//sbox
 		working = sbox(working,sbox);
 		System.out.println("sbox:  " + shortToString(working));
+		//permutation with table
+		working = perm(working);
+		System.out.println("perm:  " + shortToString(working));
 		//XOR k3
 		working = (short) (working ^ k3);
 		System.out.println("xork3: " + shortToString(working));
+		System.out.println("---------round4-------------------------");
+		//round3
+		//sbox
+		working = sbox(working,sbox);
+		System.out.println("sbox:  " + shortToString(working));
+		//XOR k4
+		working = (short) (working ^ k4);
+		System.out.println("xork4: " + shortToString(working));
 		System.out.println("chiff: " + shortToString(working));
 		return working;
 	}
@@ -184,17 +197,21 @@ public class SPN {
 	 * @return changed short
 	 */
 	private short sbox(short working,Map<Byte, Byte> sbox) {
-		byte first = (byte) ((working << 20) >>> 28);
-		byte second = (byte) ((working << 24) >>> 28);
-		byte third = (byte) ((working << 28) >>> 28);
+		byte first = (byte) ((working << 16) >>> 28);
+		byte second = (byte) ((working << 20) >>> 28);
+		byte third = (byte) ((working << 24) >>> 28);
+		byte fourth = (byte) ((working << 28) >>> 28);
 		first = sbox.get(first);
 		second = sbox.get(second);
 		third = sbox.get(third);
+		fourth = sbox.get(fourth);
 		short merge = first;
 		merge = (short) (merge << 4);
 		merge += second;
 		merge = (short) (merge << 4);
 		merge += third;
+		merge = (short) (merge << 4);
+		merge += fourth;
 		return merge;
 	}
 
@@ -262,14 +279,16 @@ public class SPN {
 		System.out.println("chiff: " + shortToString(working));
 		System.out.println("key:   " + intToString(key));
 		// key calculation
-		short k0inv = (short) ((key << 20) >>> 20);
+		short k0inv = (short) ((key << 16) >>> 16);
 		System.out.println("k0:    " + shortToString(k0inv));
-		short k1inv = perm((short) ((key << 16) >>> 20));
+		short k1inv = perm((short) ((key << 12) >>> 16));
 		System.out.println("k1:    " + shortToString(k1inv));
-		short k2inv = perm((short) ((key << 12) >>> 20));
+		short k2inv = perm((short) ((key << 8) >>> 16));
 		System.out.println("k2:    " + shortToString(k2inv));
-		short k3inv = (short) (key >>> 12);
+		short k3inv = perm((short) ((key << 4) >>> 16));
 		System.out.println("k3:    " + shortToString(k3inv));
+		short k4inv = (short) (key >>> 16);
+		System.out.println("k4:    " + shortToString(k4inv));
 		System.out.println("----------------------------------------");
 		//white step
 		working = (short) (working ^ k0inv);
@@ -301,9 +320,20 @@ public class SPN {
 		//sbox
 		working = sbox(working,sboxInv);
 		System.out.println("sbox:  " + shortToString(working));
+		//permutation with table
+		working = perm(working);
+		System.out.println("perm:  " + shortToString(working));
 		//XOR k3
 		working = (short) (working ^ k3inv);
 		System.out.println("xork3: " + shortToString(working));
+		System.out.println("---------round4-------------------------");
+		//round4
+		//sbox
+		working = sbox(working,sboxInv);
+		System.out.println("sbox:  " + shortToString(working));
+		//XOR k4
+		working = (short) (working ^ k4inv);
+		System.out.println("xork4: " + shortToString(working));
 		System.out.println("chiff: " + shortToString(working));
 		return working;
 	}
