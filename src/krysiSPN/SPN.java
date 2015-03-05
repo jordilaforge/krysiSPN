@@ -87,67 +87,67 @@ public class SPN {
 	 * @return return encrypted short value
 	 */
 	public short encrypt(short plain, int key) {
-		System.out.println("---------Encryption--------------------");
+		//System.out.println("---------Encryption--------------------");
 		short working = plain;
-		System.out.println("plain: " + shortToString(working));
-		System.out.println("key:   " + intToString(key));
+		//System.out.println("plain: " + shortToString(working));
+		//System.out.println("key:   " + intToString(key));
 		// key calculation
 		short k0 = (short) (key >>> 16);
-		System.out.println("k0:    " + shortToString(k0));
+		//System.out.println("k0:    " + shortToString(k0));
 		short k1 = (short) ((key << 4) >>> 16);
-		System.out.println("k1:    " + shortToString(k1));
+		//System.out.println("k1:    " + shortToString(k1));
 		short k2 = (short) ((key << 8) >>> 16);
-		System.out.println("k2:    " + shortToString(k2));
+		//System.out.println("k2:    " + shortToString(k2));
 		short k3 = (short) ((key << 12) >>> 16);
-		System.out.println("k3:    " + shortToString(k3));
+		//System.out.println("k3:    " + shortToString(k3));
 		short k4 = (short) ((key << 16) >>> 16);
-		System.out.println("k4:    " + shortToString(k4));
-		System.out.println("----------------------------------------");
+		//System.out.println("k4:    " + shortToString(k4));
+		//System.out.println("----------------------------------------");
 		//white step
 		working = (short) (working ^ k0);
-		System.out.println("white: " + shortToString(working));
-		System.out.println("---------round1-------------------------");
+		//System.out.println("white: " + shortToString(working));
+		//System.out.println("---------round1-------------------------");
 		//round1
 		//sbox
 		working = sbox(working,sbox);
-		System.out.println("sbox:  " + shortToString(working));
+		//System.out.println("sbox:  " + shortToString(working));
 		//permutation with table
 		working = perm(working);
-		System.out.println("perm:  " + shortToString(working));
+		//System.out.println("perm:  " + shortToString(working));
 		//XOR k1
 		working = (short) (working ^ k1);
-		System.out.println("xork1: " + shortToString(working));
-		System.out.println("---------round2-------------------------");
+		//System.out.println("xork1: " + shortToString(working));
+		//System.out.println("---------round2-------------------------");
 		//round2
 		//sbox
 		working = sbox(working,sbox);
-		System.out.println("sbox:  " + shortToString(working));
+		//System.out.println("sbox:  " + shortToString(working));
 		//permutation with table
 		working = perm(working);
-		System.out.println("perm:  " + shortToString(working));
+		//System.out.println("perm:  " + shortToString(working));
 		//XOR k2
 		working = (short) (working ^ k2);
-		System.out.println("xork2: " + shortToString(working));
-		System.out.println("---------round3-------------------------");
+		//System.out.println("xork2: " + shortToString(working));
+		//System.out.println("---------round3-------------------------");
 		//round3
 		//sbox
 		working = sbox(working,sbox);
-		System.out.println("sbox:  " + shortToString(working));
+		//System.out.println("sbox:  " + shortToString(working));
 		//permutation with table
 		working = perm(working);
-		System.out.println("perm:  " + shortToString(working));
+		//System.out.println("perm:  " + shortToString(working));
 		//XOR k3
 		working = (short) (working ^ k3);
-		System.out.println("xork3: " + shortToString(working));
-		System.out.println("---------round4-------------------------");
+		//System.out.println("xork3: " + shortToString(working));
+		//System.out.println("---------round4-------------------------");
 		//round3
 		//sbox
 		working = sbox(working,sbox);
-		System.out.println("sbox:  " + shortToString(working));
+		//System.out.println("sbox:  " + shortToString(working));
 		//XOR k4
 		working = (short) (working ^ k4);
-		System.out.println("xork4: " + shortToString(working));
-		System.out.println("chiff: " + shortToString(working));
+		//System.out.println("xork4: " + shortToString(working));
+		//System.out.println("chiff: " + shortToString(working));
 		return working;
 	}
 
@@ -233,7 +233,6 @@ public class SPN {
 	 * @return string representation of s
 	 */
 	public String shortToString(short s) {
-		System.out.println("short presentation:"+s);
 		String str = String.format("%16s", Integer.toBinaryString(s)).replace(
 				' ', '0');
 		if(str.charAt(0)=='1'){
@@ -340,5 +339,29 @@ public class SPN {
 		System.out.println("xork4: " + shortToString(working));
 		System.out.println("chiff: " + shortToString(working));
 		return working;
+	}
+	
+	
+	public int crack (short[] plainarray,short[] chiffrearray){
+		System.out.println("Crack started!");
+		long startTime = System.nanoTime();       
+		int key=Integer.MIN_VALUE;
+		while(key!=Integer.MAX_VALUE){
+			byte same=0;
+			for(int i=0;i<plainarray.length;++i){
+				if(encrypt(plainarray[i], key)==chiffrearray[i]){
+					++same;
+				}
+			}
+			if(same==6){
+				return key;
+			}
+			if(key%10000000==0){
+				double seconds = (double)(System.nanoTime() - startTime) / 1000000000.0;
+				System.out.println("Status: "+key+" Time: "+seconds+" s");
+			}
+			++key;
+		}
+		return 0;
 	}
 }
