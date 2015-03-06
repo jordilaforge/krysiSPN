@@ -341,9 +341,14 @@ public class SPN {
 		return working;
 	}
 	
-	
+	/**
+	 * Method to search for a key if you have plaintext and chiffretext
+	 * @param plainarray byte array of plaintext
+	 * @param chiffrearray byte array of chiffre text
+	 * @return returns key (int)
+	 */
 	public int crack (short[] plainarray,short[] chiffrearray){
-		System.out.println("Crack started!");
+		System.out.println("Search for Key started!");
 		long startTime = System.nanoTime();       
 		int key=Integer.MIN_VALUE;
 		while(key!=Integer.MAX_VALUE){
@@ -356,7 +361,7 @@ public class SPN {
 					break;
 				}
 			}
-			if(same==7){
+			if(same==plainarray.length){
 				return key;
 			}
 			if(key%10000000==0){
