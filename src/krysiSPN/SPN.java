@@ -348,7 +348,9 @@ public class SPN {
 	 * Method to search for a key if you have plaintext and chiffretext
 	 * @param plainarray byte array of plaintext
 	 * @param chiffrearray byte array of chiffre text
-	 * @param threadnumber 
+	 * @param threadnumber number of threads
+	 * @param start int value where to start search for key
+	 * @param end int value where to sop search for key
 	 * @return returns key (int)
 	 */
 	public int crack (short[] plainarray,short[] chiffrearray, int start, int end, int threadnumber){
