@@ -6,9 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SPN {
-
 	String sboxUrl = "sbox.txt";
 	String bitpermutationURL = "bitpermutation.txt";
 	Map<Byte, Byte> sbox = new HashMap<Byte, Byte>();
@@ -345,13 +348,14 @@ public class SPN {
 	 * Method to search for a key if you have plaintext and chiffretext
 	 * @param plainarray byte array of plaintext
 	 * @param chiffrearray byte array of chiffre text
+	 * @param threadnumber 
 	 * @return returns key (int)
 	 */
-	public int crack (short[] plainarray,short[] chiffrearray){
-		System.out.println("Search for Key started!");
+	public int crack (short[] plainarray,short[] chiffrearray, int start, int end, int threadnumber){
+		System.out.println("Thread: "+threadnumber+" started! Start: "+start+" End: "+end);
 		long startTime = System.nanoTime();       
-		int key=Integer.MIN_VALUE;
-		while(key!=Integer.MAX_VALUE){
+		int key=start;
+		while(key!=end){
 			byte same=0;
 			for(int i=0;i<plainarray.length;++i){
 				if(encrypt(plainarray[i], key)==chiffrearray[i]){
@@ -366,7 +370,7 @@ public class SPN {
 			}
 			if(key%10000000==0){
 				double seconds = (double)(System.nanoTime() - startTime) / 1000000000.0;
-				System.out.println("Status: "+key+" Time: "+seconds+" s");
+				System.out.println("Thread: "+threadnumber+" Status: "+key+" Time: "+seconds+" s");
 			}
 			++key;
 		}

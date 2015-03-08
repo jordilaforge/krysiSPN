@@ -6,10 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 
+
+
 public class MainSPN {
+	
+	public static final int threadnumber=8;
 
 	public static void main(String[] args) {
-		SPN a = new SPN();
 		short[] plainarray = new short[7];
 		short[] chiffrearray = new short[7];
 		try (BufferedReader br = new BufferedReader(new FileReader("paare.txt"))) {
@@ -35,8 +38,18 @@ public class MainSPN {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int key = a.crack(plainarray, chiffrearray);
-		System.out.println("Key: "+key);
+		long pvalue= (long)(Integer.MAX_VALUE*2l);
+		long min = Integer.MIN_VALUE;
+		long step = (long)(pvalue/threadnumber)+1l;
+		System.out.println("Searching in range from "+min+" to "+(min+(step*threadnumber)));
+		System.out.println("Starting "+ threadnumber + " threads with step "+step+" !");
+		for(long i=0;i<threadnumber;++i){
+			CalculatorThread thread = new CalculatorThread(plainarray,chiffrearray,(int)min,(int)(min+step),(int) i);
+	        Thread t = new Thread(thread);
+	        t.start();
+	        min = min+step;
+		}
+
 	}
 
 }
