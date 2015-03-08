@@ -22,7 +22,7 @@ public class CalculatorThread implements Runnable{
 	        this.threadnumber = threadnumber;
 	    }
 	
-	
+
 	@Override
 	public void run() {	
 		SPN a = new SPN();
@@ -37,7 +37,6 @@ public class CalculatorThread implements Runnable{
 				out.close();
 			
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		System.out.println("Key written!");

@@ -32,10 +32,8 @@ public class MainSPN {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long pvalue= (long)(Integer.MAX_VALUE*2l);

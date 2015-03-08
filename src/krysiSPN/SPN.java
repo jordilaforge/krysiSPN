@@ -6,10 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SPN {
 	String sboxUrl = "sbox.txt";
@@ -47,10 +43,8 @@ public class SPN {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return this.bitpermutation;
@@ -191,7 +185,7 @@ public class SPN {
 		// Lets create mask 000010010 with ones at specified postions
 		int mask = (1 << pos1) | (1 << pos2);
 
-		return i ^ mask;// TADAM!!!
+		return i ^ mask;
 	}
 
 	/**
