@@ -355,7 +355,7 @@ public class SPN {
 			byte same=0;
 			for(int i=0;i<plainarray.length;++i){
 				if(encrypt(plainarray[i], key)==chiffrearray[i]){
-					same++;
+					++same;
 				}
 				else{
 					break;
@@ -364,10 +364,11 @@ public class SPN {
 			if(same==plainarray.length){
 				return key;
 			}
-			if(key%10000000==0){
-				double seconds = (double)(System.nanoTime() - startTime) / 1000000000.0;
-				System.out.println("Thread: "+threadnumber+" Status: "+key+" Time: "+seconds+" s");
-			}
+//			Only for progressbar (costs performance)
+//			if(key%100000000==0){
+//				double seconds = (double)(System.nanoTime() - startTime) / 1000000000.0;
+//				System.out.println("Thread: "+threadnumber+" Status: "+key+" Time: "+seconds+" s");
+//			}
 			++key;
 		}
 		return 0;

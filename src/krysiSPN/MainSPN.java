@@ -10,7 +10,7 @@ import java.math.BigInteger;
 
 public class MainSPN {
 	
-	public static final int threadnumber=8;
+	public static final int threadnumber=4;
 
 	public static void main(String[] args) {
 		short[] plainarray = new short[7];
